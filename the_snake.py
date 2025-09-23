@@ -18,7 +18,8 @@ class GameObject:
     """Базовый класс игрового объекта с позицией и цветом."""
 
     def __init__(self, position):
-        """Инициализирует объект.
+        """
+        Инициализирует объект.
 
         Args:
             position (tuple): позиция на игровом поле.
@@ -48,7 +49,12 @@ class Apple(GameObject):
 
     def draw(self, surface):
         """Отрисовывает яблоко на игровом поле."""
-        rect = pygame.Rect(self.position[0], self.position[1], CELL_SIZE, CELL_SIZE)
+        rect = pygame.Rect(
+            self.position[0],
+            self.position[1],
+            CELL_SIZE,
+            CELL_SIZE
+        )
         pygame.draw.rect(surface, self.body_color, rect)
 
 
@@ -79,7 +85,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Двигает змейку с телепортом через границы поля."""
+        """Двигает змейку на одну клетку вперед с телепортом через края."""
         cur_head = self.get_head_position()
         new_x = (cur_head[0] + self.direction[0] * CELL_SIZE) % SCREEN_WIDTH
         new_y = (cur_head[1] + self.direction[1] * CELL_SIZE) % SCREEN_HEIGHT
@@ -98,19 +104,19 @@ class Snake(GameObject):
         self.next_direction = None
 
     def draw(self, surface):
-        """Отрисовывает змейку на поле."""
+        """Отрисовывает все сегменты змейки на игровом поле."""
         for pos in self.positions:
             rect = pygame.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pygame.draw.rect(surface, self.body_color, rect)
 
 
 def handle_keys(snake):
-    """Обрабатывает нажатия клавиш для управления змейкой."""
+    """Обрабатывает события клавиш, управляя направлением змейки."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 snake.next_direction = (0, -1)
             elif event.key == pygame.K_DOWN:
@@ -122,7 +128,7 @@ def handle_keys(snake):
 
 
 def main():
-    """Основной цикл игры."""
+    """Основной игровой цикл, инициализация и отрисовка."""
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Изгиб Питона — Змейка')
