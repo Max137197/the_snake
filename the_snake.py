@@ -139,7 +139,7 @@ def handle_keys(snake):
                 snake.next_direction = RIGHT
 
 
-# Глобальные переменные
+# Глобальные переменные - инициализируем как None
 screen = None
 clock = None
 
@@ -164,9 +164,11 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position()
+            # Убедимся, что яблоко не появляется на змейке
             while apple.position in snake.positions:
                 apple.randomize_position()
 
+        # Проверка столкновения с собой
         head = snake.get_head_position()
         if head in snake.positions[1:]:
             snake.reset()
@@ -176,8 +178,9 @@ def main():
         snake.draw(screen)
 
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(10)  # Ограничение FPS
 
 
+# Правильное условие для запуска main
 if __name__ == '__main__':
     main()
