@@ -3,21 +3,24 @@ import sys
 
 import pygame
 
+# Константы игры
 CELL_SIZE = 20
 FIELD_WIDTH = 32
 FIELD_HEIGHT = 24
 SCREEN_WIDTH = CELL_SIZE * FIELD_WIDTH
 SCREEN_HEIGHT = CELL_SIZE * FIELD_HEIGHT
 
-# Добавляем недостающие константы
 GRID_SIZE = CELL_SIZE
 GRID_WIDTH = FIELD_WIDTH
 GRID_HEIGHT = FIELD_HEIGHT
-BOARD_BACKGROUND_COLOR = BLACK = (0, 0, 0)
+
+# Цвета
+BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BOARD_BACKGROUND_COLOR = BLACK
 
-# Константы направлений
+# Направления движения
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
@@ -136,7 +139,7 @@ def handle_keys(snake):
                 snake.next_direction = RIGHT
 
 
-# Создаем глобальные переменные
+# Глобальные переменные
 screen = None
 clock = None
 
@@ -144,11 +147,9 @@ clock = None
 def main():
     """Основной цикл игры с обновлением состояний и отрисовкой."""
     global screen, clock
-    
+
     pygame.init()
-    screen = pygame.display.set_mode(
-        (SCREEN_WIDTH, SCREEN_HEIGHT)
-    )
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Изгиб Питона — Змейка')
     clock = pygame.time.Clock()
 
