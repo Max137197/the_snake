@@ -139,20 +139,15 @@ def handle_keys(snake):
                 snake.next_direction = RIGHT
 
 
-# Глобальные переменные - инициализируем как None
-screen = None
-clock = None
+# Глобальные переменные - инициализируем pygame и создаем объекты
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption('Изгиб Питона — Змейка')
+clock = pygame.time.Clock()
 
 
 def main():
     """Основной цикл игры с обновлением состояний и отрисовкой."""
-    global screen, clock
-
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Изгиб Питона — Змейка')
-    clock = pygame.time.Clock()
-
     snake = Snake()
     apple = Apple()
 
@@ -164,11 +159,9 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position()
-            # Убедимся, что яблоко не появляется на змейке
             while apple.position in snake.positions:
                 apple.randomize_position()
 
-        # Проверка столкновения с собой
         head = snake.get_head_position()
         if head in snake.positions[1:]:
             snake.reset()
@@ -178,9 +171,8 @@ def main():
         snake.draw(screen)
 
         pygame.display.flip()
-        clock.tick(10)  # Ограничение FPS
+        clock.tick(10)
 
 
-# Правильное условие для запуска main
 if __name__ == '__main__':
     main()
