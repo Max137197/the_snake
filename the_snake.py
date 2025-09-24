@@ -28,7 +28,7 @@ class GameObject:
         self.body_color = None
 
     def draw(self, surface):
-        """Отрисовка объекта, переопределяется в наследниках."""
+        """Отрисовка объекта."""
         pass
 
 
@@ -53,7 +53,7 @@ class Apple(GameObject):
             self.position[0],
             self.position[1],
             CELL_SIZE,
-            CELL_SIZE
+            CELL_SIZE,
         )
         pygame.draw.rect(surface, self.body_color, rect)
 
@@ -131,7 +131,7 @@ def main():
     """Основной игровой цикл."""
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Изгиб Питона — Змейка')
+    pygame.display.set_caption("Изгиб Питона — Змейка")
     clock = pygame.time.Clock()
 
     snake = Snake()
@@ -160,6 +160,5 @@ def main():
         clock.tick(10)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
