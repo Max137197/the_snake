@@ -18,8 +18,7 @@ class GameObject:
     """Базовый класс игрового объекта с позицией и цветом."""
 
     def __init__(self, position):
-        """
-        Инициализирует объект.
+        """Инициализирует объект.
 
         Args:
             position (tuple): Кортеж (x, y) позиции на игровом поле.
@@ -53,7 +52,7 @@ class Apple(GameObject):
             self.position[0],
             self.position[1],
             CELL_SIZE,
-            CELL_SIZE
+            CELL_SIZE,
         )
         pygame.draw.rect(surface, self.body_color, rect)
 
@@ -77,9 +76,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self):
-        """
-        Обновляет направление движения, не позволяя сделать разворот на 180 градусов.
-        """
+        """Обновляет направление движения, запрещая разворот на 180 градусов."""
         if self.next_direction:
             opposite = (-self.direction[0], -self.direction[1])
             if self.next_direction != opposite:
@@ -87,10 +84,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """
-        Двигает змейку на одну клетку вперед с "телепортацией"
-        при выходе за границы игрового поля.
-        """
+        """Двигает змейку на одну клетку вперед с телепортацией за границы."""
         cur_head = self.get_head_position()
         new_x = (cur_head[0] + self.direction[0] * CELL_SIZE) % SCREEN_WIDTH
         new_y = (cur_head[1] + self.direction[1] * CELL_SIZE) % SCREEN_HEIGHT
