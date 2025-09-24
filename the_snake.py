@@ -47,7 +47,7 @@ class Apple(GameObject):
         self.position = (x, y)
 
     def draw(self, surface):
-        """Отрисовывает яблоко на игровом поле в виде квадрата нужного цвета."""
+        """Отрисовывает яблоко на игровом поле."""
         rect = pygame.Rect(
             self.position[0],
             self.position[1],
@@ -61,7 +61,7 @@ class Snake(GameObject):
     """Змейка с логикой движения, отрисовки и управления."""
 
     def __init__(self):
-        """Инициализация змейки в центре игрового поля, движение вправо."""
+        """Инициализация змейки в центре игрового поля."""
         center_x = (FIELD_WIDTH // 2) * CELL_SIZE
         center_y = (FIELD_HEIGHT // 2) * CELL_SIZE
         super().__init__((center_x, center_y))
@@ -76,7 +76,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self):
-        """Обновляет направление движения, запрещая разворот на 180 градусов."""
+        """Обновляет направление движения."""
         if self.next_direction:
             opposite = (-self.direction[0], -self.direction[1])
             if self.next_direction != opposite:
@@ -84,7 +84,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Двигает змейку на одну клетку вперед с телепортацией за границы."""
+        """Двигает змейку на одну клетку вперед."""
         cur_head = self.get_head_position()
         new_x = (cur_head[0] + self.direction[0] * CELL_SIZE) % SCREEN_WIDTH
         new_y = (cur_head[1] + self.direction[1] * CELL_SIZE) % SCREEN_HEIGHT
@@ -129,7 +129,9 @@ def handle_keys(snake):
 def main():
     """Основной цикл игры с обновлением состояний и отрисовкой."""
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode(
+        (SCREEN_WIDTH, SCREEN_HEIGHT)
+    )
     pygame.display.set_caption('Изгиб Питона — Змейка')
     clock = pygame.time.Clock()
 
