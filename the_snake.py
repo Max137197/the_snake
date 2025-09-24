@@ -129,9 +129,7 @@ def handle_keys(snake):
 def main():
     """Основной цикл игры с обновлением состояний и отрисовкой."""
     pygame.init()
-    screen = pygame.display.set_mode(
-        (SCREEN_WIDTH, SCREEN_HEIGHT)
-    )
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Изгиб Питона — Змейка')
     clock = pygame.time.Clock()
 
@@ -163,5 +161,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
