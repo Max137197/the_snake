@@ -9,15 +9,25 @@ FIELD_HEIGHT = 24
 SCREEN_WIDTH = CELL_SIZE * FIELD_WIDTH
 SCREEN_HEIGHT = CELL_SIZE * FIELD_HEIGHT
 
-BLACK = (0, 0, 0)
+# Добавляем недостающие константы
+GRID_SIZE = CELL_SIZE
+GRID_WIDTH = FIELD_WIDTH
+GRID_HEIGHT = FIELD_HEIGHT
+BOARD_BACKGROUND_COLOR = BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+
+# Константы направлений
+UP = (0, -1)
+DOWN = (0, 1)
+LEFT = (-1, 0)
+RIGHT = (1, 0)
 
 
 class GameObject:
     """Базовый класс игрового объекта с позицией и цветом."""
 
-    def __init__(self, position):
+    def __init__(self, position=(0, 0)):
         """Инициализирует объект.
 
         Args:
@@ -36,7 +46,7 @@ class Apple(GameObject):
 
     def __init__(self):
         """Инициализация с цветом и случайной позицией."""
-        super().__init__((0, 0))
+        super().__init__()
         self.body_color = RED
         self.randomize_position()
 
@@ -68,7 +78,7 @@ class Snake(GameObject):
         self.body_color = GREEN
         self.length = 1
         self.positions = [self.position]
-        self.direction = (1, 0)
+        self.direction = RIGHT
         self.next_direction = None
 
     def get_head_position(self):
@@ -99,7 +109,7 @@ class Snake(GameObject):
         center_x = (FIELD_WIDTH // 2) * CELL_SIZE
         center_y = (FIELD_HEIGHT // 2) * CELL_SIZE
         self.positions = [(center_x, center_y)]
-        self.direction = (1, 0)
+        self.direction = RIGHT
         self.next_direction = None
 
     def draw(self, surface):
@@ -117,17 +127,24 @@ def handle_keys(snake):
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snake.next_direction = (0, -1)
+                snake.next_direction = UP
             elif event.key == pygame.K_DOWN:
-                snake.next_direction = (0, 1)
+                snake.next_direction = DOWN
             elif event.key == pygame.K_LEFT:
-                snake.next_direction = (-1, 0)
+                snake.next_direction = LEFT
             elif event.key == pygame.K_RIGHT:
-                snake.next_direction = (1, 0)
+                snake.next_direction = RIGHT
+
+
+# Создаем глобальные переменные
+screen = None
+clock = None
 
 
 def main():
     """Основной цикл игры с обновлением состояний и отрисовкой."""
+    global screen, clock
+    
     pygame.init()
     screen = pygame.display.set_mode(
         (SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -153,7 +170,7 @@ def main():
         if head in snake.positions[1:]:
             snake.reset()
 
-        screen.fill(BLACK)
+        screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw(screen)
         snake.draw(screen)
 
