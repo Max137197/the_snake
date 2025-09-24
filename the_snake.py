@@ -84,4 +84,80 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """Двигает змейку на одну клетку вперед с телепортацией
+        """Двигает змейку на одну клетку вперед с телепортацией за границы."""
+        cur_head = self.get_head_position()
+        new_x = (cur_head[0] + self.direction[0] * CELL_SIZE) % SCREEN_WIDTH
+        new_y = (cur_head[1] + self.direction[1] * CELL_SIZE) % SCREEN_HEIGHT
+        new_head = (new_x, new_y)
+        self.positions.insert(0, new_head)
+        if len(self.positions) > self.length:
+            self.positions.pop()
+
+    def reset(self):
+        """Сбрасывает змейку к начальному положению и длине."""
+        self.length = 1
+        center_x = (FIELD_WIDTH // 2) * CELL_SIZE
+        center_y = (FIELD_HEIGHT // 2) * CELL_SIZE
+        self.positions = [(center_x, center_y)]
+        self.direction = (1, 0)
+        self.next_direction = None
+
+    def draw(self, surface):
+        """Отрисовывает все сегменты змейки на игровом поле."""
+        for pos in self.positions:
+            rect = pygame.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
+            pygame.draw.rect(surface, self.body_color, rect)
+
+
+def handle_keys(snake):
+    """Обрабатывает нажатия клавиш, управляя направлением змейки."""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                snake.next_direction = (0, -1)
+            elif event.key == pygame.K_DOWN:
+                snake.next_direction = (0, 1)
+            elif event.key == pygame.K_LEFT:
+                snake.next_direction = (-1, 0)
+            elif event.key == pygame.K_RIGHT:
+                snake.next_direction = (1, 0)
+
+
+def main():
+    """Основной цикл игры с обновлением состояний и отрисовкой."""
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption('Изгиб Питона — Змейка')
+    clock = pygame.time.Clock()
+
+    snake = Snake()
+    apple = Apple()
+
+    while True:
+        handle_keys(snake)
+        snake.update_direction()
+        snake.move()
+
+        if snake.get_head_position() == apple.position:
+            snake.length += 1
+            apple.randomize_position()
+            while apple.position in snake.positions:
+                apple.randomize_position()
+
+        head = snake.get_head_position()
+        if head in snake.positions[1:]:
+            snake.reset()
+
+        screen.fill(BLACK)
+        apple.draw(screen)
+        snake.draw(screen)
+
+        pygame.display.flip()
+        clock.tick(10)
+
+
+if __name__ == '__main__':
+    main()
