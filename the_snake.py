@@ -35,17 +35,14 @@ class GameObject:
         Инициализирует объект.
 
         Args:
-            position (tuple): Кортеж (x, y) позиции на игровом поле.
+            position (tuple): Позиция (x, y) на игровом поле.
             body_color (tuple): Цвет объекта.
         """
         self.position = position
         self.body_color = body_color
 
     def draw(self):
-        """Отрисовка объекта на игровом поле.
-
-        Метод должен быть переопределён в наследниках.
-        """
+        """Отрисовка объекта на игровом поле."""
         raise NotImplementedError(
             f'Method draw() not implemented in {self.__class__.__name__}'
         )
@@ -59,14 +56,14 @@ class Apple(GameObject):
         Инициализация яблока.
 
         Args:
-            occupied_positions (list): Список занятых позиций, где нельзя размещать яблоко.
+            occupied_positions (list): Занятые позиции, где нельзя размещать яблоко.
             body_color (tuple): Цвет яблока.
         """
         super().__init__(body_color=body_color)
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions=None):
-        """Устанавливает случайную позицию яблока, не попадающую в занятые клетки."""
+        """Устанавливает случайную позицию яблока вне занятых клеток."""
         if occupied_positions is None:
             occupied_positions = []
 
@@ -79,6 +76,7 @@ class Apple(GameObject):
                 break
 
     def draw(self):
+        """Отрисовывает яблоко на экране."""
         rect = pg.Rect(self.position[0], self.position[1], CELL_SIZE, CELL_SIZE)
         pg.draw.rect(screen, self.body_color, rect)
 
@@ -87,14 +85,12 @@ class Snake(GameObject):
     """Змейка с логикой движения, отрисовки и управления."""
 
     def __init__(self, body_color=GREEN):
-        """
-        Инициализация змейки.
-        """
+        """Инициализация змейки."""
         super().__init__(body_color=body_color)
         self.reset()
 
     def reset(self):
-        """Сбрасывает змейку к начальному положению и длине."""
+        """Сброс змейки к начальному положению и длине."""
         center_x = (FIELD_WIDTH // 2) * CELL_SIZE
         center_y = (FIELD_HEIGHT // 2) * CELL_SIZE
         self.length = 1
@@ -106,14 +102,19 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self, next_direction):
-        """Обновляет направление движения змейки."""
+        """
+        Обновляет направление движения.
+
+        Args:
+            next_direction (tuple): Следующее направление.
+        """
         if next_direction is not None:
             opposite = (-self.direction[0], -self.direction[1])
             if next_direction != opposite:
                 self.direction = next_direction
 
     def move(self):
-        """Двигает змейку на одну клетку вперед."""
+        """Перемещает змейку на одну клетку вперед."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
         new_x = (head_x + dx * CELL_SIZE) % SCREEN_WIDTH
@@ -134,7 +135,7 @@ class Snake(GameObject):
 
 
 def handle_keys():
-    """Обрабатывает нажатия клавиш и возвращает направление змейки или None."""
+    """Обрабатывает нажатия клавиш и возвращает направление змейки."""
     next_direction = None
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -143,11 +144,11 @@ def handle_keys():
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 next_direction = UP
-            if event.key == pg.K_DOWN:
+            elif event.key == pg.K_DOWN:
                 next_direction = DOWN
-            if event.key == pg.K_LEFT:
+            elif event.key == pg.K_LEFT:
                 next_direction = LEFT
-            if event.key == pg.K_RIGHT:
+            elif event.key == pg.K_RIGHT:
                 next_direction = RIGHT
     return next_direction
 
@@ -164,11 +165,11 @@ def main():
         snake.update_direction(next_dir)
         snake.move()
 
-        if snake.get_head_position() == apple.position:
+        head = snake.get_head_position()
+        if head == apple.position:
             snake.length += 1
             apple.randomize_position(occupied_positions=snake.positions)
-
-        elif snake.get_head_position() not in snake.positions[1:]:
+        elif head not in snake.positions[1:]:
             pass
         else:
             snake.reset()
