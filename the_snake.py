@@ -77,7 +77,9 @@ class Apple(GameObject):
 
     def draw(self):
         """Отрисовывает яблоко на экране."""
-        rect = pg.Rect(self.position[0], self.position[1], CELL_SIZE, CELL_SIZE)
+        rect = pg.Rect(
+            self.position[0], self.position[1], CELL_SIZE, CELL_SIZE
+        )
         pg.draw.rect(screen, self.body_color, rect)
 
 
@@ -124,7 +126,9 @@ class Snake(GameObject):
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
             tail = self.positions.pop()
-            erase_rect = pg.Rect(tail[0], tail[1], CELL_SIZE, CELL_SIZE)
+            erase_rect = pg.Rect(
+                tail[0], tail[1], CELL_SIZE, CELL_SIZE
+            )
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, erase_rect)
 
     def draw(self):
