@@ -49,7 +49,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Яблоко, появляется в случайной клетке игрового поля вне змейки."""
+    """Яблоко появляется в случайной клетке игрового поля вне змейки."""
 
     def __init__(self, occupied_positions=None, body_color=RED):
         super().__init__(body_color=body_color)
@@ -99,7 +99,7 @@ class Snake(GameObject):
                 self.direction = next_direction
 
     def move(self):
-        """Перемещает змейку вперед на одну клетку с обработкой выхода за границы экрана."""
+        """Перемещает змейку вперед на одну клетку с обработкой выхода за границы."""
         head_x, head_y = self.get_head_position()
         dir_x, dir_y = self.direction
         new_x = (head_x + dir_x * CELL_SIZE) % SCREEN_WIDTH
