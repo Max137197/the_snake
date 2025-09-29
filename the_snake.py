@@ -31,7 +31,8 @@ class GameObject:
     """Базовый класс игрового объекта с позицией и цветом."""
 
     def __init__(self, position=(0, 0), body_color=None):
-        """Инициализирует объект.
+        """
+        Инициализирует объект.
 
         Args:
             position (tuple): Кортеж (x, y) позиции на игровом поле.
@@ -55,6 +56,8 @@ class Apple(GameObject):
 
     def __init__(self, occupied_positions=None, body_color=RED):
         """
+        Инициализация яблока.
+
         Args:
             occupied_positions (list): Список занятых позиций, где нельзя размещать яблоко.
             body_color (tuple): Цвет яблока.
@@ -84,6 +87,9 @@ class Snake(GameObject):
     """Змейка с логикой движения, отрисовки и управления."""
 
     def __init__(self, body_color=GREEN):
+        """
+        Инициализация змейки.
+        """
         super().__init__(body_color=body_color)
         self.reset()
 
@@ -100,7 +106,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self, next_direction):
-        """Обновляет направление движения."""
+        """Обновляет направление движения змейки."""
         if next_direction is not None:
             opposite = (-self.direction[0], -self.direction[1])
             if next_direction != opposite:
@@ -117,11 +123,11 @@ class Snake(GameObject):
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
             tail = self.positions.pop()
-            # Затирание хвоста (опционально можно оптимизировать нарисовав заново фон)
             erase_rect = pg.Rect(tail[0], tail[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, erase_rect)
 
     def draw(self):
+        """Отрисовывает змейку на экране."""
         for pos in self.positions:
             rect = pg.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, self.body_color, rect)
@@ -147,6 +153,7 @@ def handle_keys():
 
 
 def main():
+    """Главная функция игры."""
     snake = Snake()
     apple = Apple(occupied_positions=snake.positions)
 
@@ -161,9 +168,11 @@ def main():
             snake.length += 1
             apple.randomize_position(occupied_positions=snake.positions)
 
-        elif snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() not in snake.positions[1:]:
+            pass
+        else:
             snake.reset()
-            screen.fill(BOARD_BACKGROUND_COLOR)  # Очистка экрана при сбросе
+            screen.fill(BOARD_BACKGROUND_COLOR)
 
         apple.draw()
         snake.draw()
@@ -174,4 +183,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
