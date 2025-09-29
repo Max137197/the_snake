@@ -4,24 +4,19 @@ import pygame as pg  # принято сокращение для pygame
 
 
 # Константы игры
-
 CELL_SIZE = 20
 FIELD_WIDTH = 32
 FIELD_HEIGHT = 24
 SCREEN_WIDTH = CELL_SIZE * FIELD_WIDTH
 SCREEN_HEIGHT = CELL_SIZE * FIELD_HEIGHT
 
-
 # Цвета
-
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BOARD_BACKGROUND_COLOR = BLACK
 
-
 # Направления движения
-
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
@@ -49,7 +44,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Яблоко появляется в случайной клетке игрового поля вне змейки."""
+    """Яблоко, появляется в случайной клетке игрового поля вне змейки."""
 
     def __init__(self, occupied_positions=None, body_color=RED):
         super().__init__(body_color=body_color)
@@ -99,7 +94,7 @@ class Snake(GameObject):
                 self.direction = next_direction
 
     def move(self):
-        """Перемещает змейку вперед на одну клетку с обработкой выхода за границы."""
+        """Двигает змейку на одну клетку вперед, с оборачиванием по краям."""
         head_x, head_y = self.get_head_position()
         dir_x, dir_y = self.direction
         new_x = (head_x + dir_x * CELL_SIZE) % SCREEN_WIDTH
@@ -126,11 +121,11 @@ def handle_keys(snake):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 next_dir = UP
-            elif event.key == pg.K_DOWN:
+            if event.key == pg.K_DOWN:
                 next_dir = DOWN
-            elif event.key == pg.K_LEFT:
+            if event.key == pg.K_LEFT:
                 next_dir = LEFT
-            elif event.key == pg.K_RIGHT:
+            if event.key == pg.K_RIGHT:
                 next_dir = RIGHT
     if next_dir:
         snake.update_direction(next_dir)
@@ -148,6 +143,8 @@ def main():
     snake = Snake()
     apple = Apple(occupied_positions=set(snake.positions))
 
+    screen.fill(BOARD_BACKGROUND_COLOR)
+
     while True:
         handle_keys(snake)
         snake.move()
@@ -158,8 +155,10 @@ def main():
 
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
+            screen.fill(BOARD_BACKGROUND_COLOR)
 
         screen.fill(BOARD_BACKGROUND_COLOR)
+
         apple.draw()
         snake.draw()
 
