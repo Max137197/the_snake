@@ -4,19 +4,24 @@ import pygame as pg  # принято сокращение для pygame
 
 
 # Константы игры
+
 CELL_SIZE = 20
 FIELD_WIDTH = 32
 FIELD_HEIGHT = 24
 SCREEN_WIDTH = CELL_SIZE * FIELD_WIDTH
 SCREEN_HEIGHT = CELL_SIZE * FIELD_HEIGHT
 
+
 # Цвета
+
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BOARD_BACKGROUND_COLOR = BLACK
 
+
 # Направления движения
+
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
@@ -44,14 +49,14 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Яблоко, появляется в случайной клетке игрового поля вне змейки."""
+    """Яблоко появляется в случайной клетке игрового поля вне змейки."""
 
     def __init__(self, occupied_positions=None, body_color=RED):
         super().__init__(body_color=body_color)
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions=None):
-        """Устанавливает случайную позицию яблока, не попадающую в занятые клетки."""
+        """Задаёт случайную позицию яблока вне занятых клеток."""
         if occupied_positions is None:
             occupied_positions = set()
         while True:
@@ -94,7 +99,7 @@ class Snake(GameObject):
                 self.direction = next_direction
 
     def move(self):
-        """Двигает змейку на одну клетку вперед, с оборачиванием по краям."""
+        """Перемещает змейку на одну клетку вперёд с учётом границ."""
         head_x, head_y = self.get_head_position()
         dir_x, dir_y = self.direction
         new_x = (head_x + dir_x * CELL_SIZE) % SCREEN_WIDTH
@@ -105,14 +110,14 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self):
-        """Отрисовывает все сегменты змейки на игровом поле."""
+        """Отрисовывает все сегменты змейки на поле."""
         for pos in self.positions:
             rect = pg.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, self.body_color, rect)
 
 
 def handle_keys(snake):
-    """Обрабатывает нажатия клавиш, управляя направлением змейки."""
+    """Обрабатывает нажатия клавиш, изменяя направление змейки."""
     next_dir = None
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -121,17 +126,16 @@ def handle_keys(snake):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 next_dir = UP
-            if event.key == pg.K_DOWN:
+            elif event.key == pg.K_DOWN:
                 next_dir = DOWN
-            if event.key == pg.K_LEFT:
+            elif event.key == pg.K_LEFT:
                 next_dir = LEFT
-            if event.key == pg.K_RIGHT:
+            elif event.key == pg.K_RIGHT:
                 next_dir = RIGHT
     if next_dir:
         snake.update_direction(next_dir)
 
 
-# Инициализация pygame и глобальная поверхность для рисования
 pg.init()
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pg.display.set_caption('Изгиб Питона — Змейка')
@@ -143,8 +147,6 @@ def main():
     snake = Snake()
     apple = Apple(occupied_positions=set(snake.positions))
 
-    screen.fill(BOARD_BACKGROUND_COLOR)
-
     while True:
         handle_keys(snake)
         snake.move()
@@ -155,10 +157,8 @@ def main():
 
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-            screen.fill(BOARD_BACKGROUND_COLOR)
 
         screen.fill(BOARD_BACKGROUND_COLOR)
-
         apple.draw()
         snake.draw()
 
