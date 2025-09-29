@@ -1,7 +1,5 @@
 import random
-
 import sys
-
 import pygame as pg  # принято сокращение для pygame
 
 
@@ -141,7 +139,7 @@ clock = pg.time.Clock()
 
 
 def main():
-    """Основной цикл игры с обновлением состояний и отрисовкой."""
+    """Основной цикл игры: обновление и отрисовка объектов."""
     snake = Snake()
     apple = Apple(occupied_positions=set(snake.positions))
 
