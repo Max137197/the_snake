@@ -39,7 +39,9 @@ class GameObject:
 
     def draw(self):
         """Отрисовка объекта на глобальной поверхности screen."""
-        raise NotImplementedError(f"Метод draw не реализован в классе {self.__class__.__name__}")
+        raise NotImplementedError(
+            f"Метод draw не реализован в классе {self.__class__.__name__}"
+        )
 
 
 class Apple(GameObject):
@@ -101,8 +103,7 @@ class Snake(GameObject):
         new_head = (new_x, new_y)
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
-            tail = self.positions.pop()
-            # Стереть хвост можно делать здесь (если будет реализована анимация)
+            self.positions.pop()
 
     def draw(self):
         # Можно оптимизировать, стирая только хвост и рисуя новый сегмент головы
@@ -155,9 +156,9 @@ def main():
 
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-            screen.fill(BOARD_BACKGROUND_COLOR)  # перерисовка заднего фона при сбросе
+            screen.fill(BOARD_BACKGROUND_COLOR)
 
-        screen.fill(BOARD_BACKGROUND_COLOR)  # можно было рисовать выборочно, но чтобы не усложнять
+        screen.fill(BOARD_BACKGROUND_COLOR)
 
         apple.draw()
         snake.draw()
@@ -168,4 +169,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
