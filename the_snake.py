@@ -71,6 +71,7 @@ class Apple(GameObject):
             x = random.randint(0, FIELD_WIDTH - 1) * CELL_SIZE
             y = random.randint(0, FIELD_HEIGHT - 1) * CELL_SIZE
             pos = (x, y)
+            # Исправлена проверка для соответствия E713
             if pos not in occupied_positions:
                 self.position = pos
                 break
