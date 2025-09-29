@@ -1,6 +1,5 @@
 import random
 import sys
-
 import pygame as pg  # принято сокращение для pygame
 
 
@@ -40,7 +39,7 @@ class GameObject:
     def draw(self):
         """Отрисовка объекта на глобальной поверхности screen."""
         raise NotImplementedError(
-            f"Метод draw не реализован в классе {self.__class__.__name__}"
+            f'Метод draw не реализован в классе {self.__class__.__name__}'
         )
 
 
@@ -106,7 +105,7 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self):
-        # Можно оптимизировать, стирая только хвост и рисуя новый сегмент головы
+        """Отрисовывает все сегменты змейки на игровом поле."""
         for pos in self.positions:
             rect = pg.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, self.body_color, rect)
