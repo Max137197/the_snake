@@ -1,7 +1,8 @@
 import random
 
 import pygame as pg
-# === Настройки ===
+
+
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
@@ -21,14 +22,11 @@ SPEED = 10
 
 
 class GameObject:
-    """Базовый класс для игровых объектов."""
-
     def __init__(self, position=(0, 0), body_color=None):
         self.position = position
         self.body_color = body_color
 
     def draw(self, surface):
-        """Отрисовка объекта на экране."""
         rect = pg.Rect(
             (self.position[0] * GRID_SIZE, self.position[1] * GRID_SIZE),
             (GRID_SIZE, GRID_SIZE)
@@ -38,14 +36,11 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Яблоко — еда для змейки."""
-
     def __init__(self, occupied_positions=None):
         super().__init__(body_color=APPLE_COLOR)
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions=None):
-        """Устанавливает случайную позицию для яблока."""
         if occupied_positions is None:
             occupied_positions = set()
         while True:
@@ -59,18 +54,14 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    """Змейка — управляемый игроком объект."""
-
     def __init__(self):
         super().__init__(body_color=SNAKE_COLOR)
         self.reset()
 
     def update_direction(self, direction):
-        """Обновляет направление движения змейки."""
         self.direction = direction
 
     def move(self):
-        """Перемещает змейку на одну клетку вперёд."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
         new_head = (
@@ -82,7 +73,6 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self, surface):
-        """Отрисовывает змейку на экране."""
         for i, position in enumerate(self.positions):
             rect = pg.Rect(
                 (position[0] * GRID_SIZE, position[1] * GRID_SIZE),
@@ -96,18 +86,15 @@ class Snake(GameObject):
                 pg.draw.rect(surface, BOARD_BACKGROUND_COLOR, rect, 1)
 
     def get_head_position(self):
-        """Возвращает позицию головы змейки."""
         return self.positions[0]
 
     def reset(self):
-        """Сбрасывает змейку в начальное состояние."""
         self.length = 1
         self.positions = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
         self.direction = RIGHT
 
 
 def handle_keys(snake):
-    """Обрабатывает нажатия клавиш для управления змейкой."""
     next_direction = None
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -127,7 +114,6 @@ def handle_keys(snake):
 
 
 def main():
-    """Основной цикл игры: обновление и отрисовка объектов."""
     pg.init()
     screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pg.display.set_caption('Изгиб Питона — Змейка')
