@@ -1,8 +1,6 @@
 import random
 
 import pygame as pg
-
-
 # === Настройки ===
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
@@ -90,10 +88,10 @@ class Snake(GameObject):
                 (position[0] * GRID_SIZE, position[1] * GRID_SIZE),
                 (GRID_SIZE, GRID_SIZE)
             )
-            if i == 0:  # Голова
+            if i == 0:
                 pg.draw.rect(surface, self.body_color, rect)
                 pg.draw.rect(surface, BORDER_COLOR, rect, 1)
-            else:  # Тело
+            else:
                 pg.draw.rect(surface, self.body_color, rect)
                 pg.draw.rect(surface, BOARD_BACKGROUND_COLOR, rect, 1)
 
@@ -124,7 +122,6 @@ def handle_keys(snake):
                 next_direction = LEFT
             elif event.key == pg.K_RIGHT and snake.direction != LEFT:
                 next_direction = RIGHT
-
     if next_direction:
         snake.update_direction(next_direction)
 
