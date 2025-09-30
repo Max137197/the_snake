@@ -1,5 +1,7 @@
 import random
+
 import pygame as pg
+
 
 # === Настройки ===
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
@@ -17,7 +19,7 @@ BORDER_COLOR = (93, 216, 228)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
-SPEED = 10  # Кадров в секунду
+SPEED = 10
 
 
 class GameObject:
@@ -141,17 +143,13 @@ def main():
         handle_keys(snake)
         snake.move()
 
-        # Проверка поедания яблока
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(occupied_positions=set(snake.positions))
-
-        # Проверка столкновения с самим собой
-        if snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
             apple.randomize_position(occupied_positions=set(snake.positions))
 
-        # Отрисовка
         screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw(screen)
         snake.draw(screen)
