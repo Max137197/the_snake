@@ -120,6 +120,7 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self):
+        """Отрисовывает все сегменты змейки на игровом поле."""
         for pos in self.positions:
             rect = pg.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, self.body_color, rect)
@@ -145,6 +146,7 @@ def handle_keys():
 
 
 def main():
+    """Основной цикл игры с обновлением состояний и отрисовкой."""
     snake = Snake()
     apple = Apple(occupied_positions=snake.positions)
 
