@@ -109,7 +109,7 @@ class Snake(GameObject):
 
     def move(self):
         """Двигает змейку на одну клетку вперед."""
-        head_x, head_y = self.get_head_position()  # исправлено разбиение кортежа
+        head_x, head_y = self.get_head_position()
         dx, dy = self.direction
         new_x = (head_x + dx * CELL_SIZE) % SCREEN_WIDTH
         new_y = (head_y + dy * CELL_SIZE) % SCREEN_HEIGHT
@@ -120,14 +120,14 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self):
-        """Отрисовывает все сегменты змейки на игровом поле."""
+        """Отрисовывает все сегменты змейки."""
         for pos in self.positions:
             rect = pg.Rect(pos[0], pos[1], CELL_SIZE, CELL_SIZE)
             pg.draw.rect(screen, self.body_color, rect)
 
 
 def handle_keys():
-    """Обрабатывает нажатия клавиш и возвращает направление змейки или None."""
+    """Обрабатывает нажатия клавиш и возвращает новое направление или None."""
     next_direction = None
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -146,7 +146,7 @@ def handle_keys():
 
 
 def main():
-    """Основной цикл игры с обновлением состояний и отрисовкой."""
+    """Основной цикл игры: логика и отрисовка."""
     snake = Snake()
     apple = Apple(occupied_positions=snake.positions)
 
@@ -163,7 +163,7 @@ def main():
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
             apple.randomize_position(occupied_positions=snake.positions)
-            screen.fill(BOARD_BACKGROUND_COLOR)  # Очистка экрана при сбросе
+            screen.fill(BOARD_BACKGROUND_COLOR)
 
         apple.draw()
         snake.draw()
@@ -174,3 +174,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
