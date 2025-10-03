@@ -57,7 +57,7 @@ class Apple(GameObject):
     def __init__(self, occupied_positions=None, body_color=RED):
         """
         Args:
-            occupied_positions (list): Список занятых позиций, где нельзя размещать яблоко.
+            occupied_positions (list): Список занятых позиций.
             body_color (tuple): Цвет яблока.
         """
         super().__init__(body_color=body_color)
@@ -72,8 +72,7 @@ class Apple(GameObject):
             x = random.randint(0, FIELD_WIDTH - 1) * CELL_SIZE
             y = random.randint(0, FIELD_HEIGHT - 1) * CELL_SIZE
             pos = (x, y)
-            # Исправление E713: использование 'not in' вместо 'not ... in ...'
-            if pos not in occupied_positions:
+            if pos not in occupied_positions:  # исправлено по E713
                 self.position = pos
                 break
 
@@ -102,7 +101,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self, next_direction):
-        """Обновляет направление движения."""
+        """Обновляет направление движения змейки."""
         if next_direction is not None:
             opposite = (-self.direction[0], -self.direction[1])
             if next_direction != opposite:
@@ -110,8 +109,7 @@ class Snake(GameObject):
 
     def move(self):
         """Двигает змейку на одну клетку вперед."""
-        # Исправление: распаковка кортежей
-        head_x, head_y = self.get_head_position()
+        head_x, head_y = self.get_head_position()  # исправлено разбиение кортежа
         dx, dy = self.direction
         new_x = (head_x + dx * CELL_SIZE) % SCREEN_WIDTH
         new_y = (head_y + dy * CELL_SIZE) % SCREEN_HEIGHT
@@ -138,11 +136,11 @@ def handle_keys():
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 next_direction = UP
-            if event.key == pg.K_DOWN:
+            elif event.key == pg.K_DOWN:
                 next_direction = DOWN
-            if event.key == pg.K_LEFT:
+            elif event.key == pg.K_LEFT:
                 next_direction = LEFT
-            if event.key == pg.K_RIGHT:
+            elif event.key == pg.K_RIGHT:
                 next_direction = RIGHT
     return next_direction
 
