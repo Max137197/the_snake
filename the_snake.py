@@ -72,6 +72,7 @@ class Apple(GameObject):
             x = random.randint(0, FIELD_WIDTH - 1) * CELL_SIZE
             y = random.randint(0, FIELD_HEIGHT - 1) * CELL_SIZE
             pos = (x, y)
+            # Исправление E713: использование 'not in' вместо 'not ... in ...'
             if pos not in occupied_positions:
                 self.position = pos
                 break
@@ -109,6 +110,7 @@ class Snake(GameObject):
 
     def move(self):
         """Двигает змейку на одну клетку вперед."""
+        # Исправление: распаковка кортежей
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
         new_x = (head_x + dx * CELL_SIZE) % SCREEN_WIDTH
