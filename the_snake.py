@@ -67,15 +67,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Описывает поведение яблока, наследуется от GameObject.
-    Атрибуты:
-    body_color равен цвету яблока.
-    position вычисляется случайно методом randomize_position.
-    Методы:
-    randomize_position - возвращает случайную позицию.
-    draw - отрисовывает яблоко.
-    """
-
+  
     def __init__(self, body_color: Color = APPLE_COLOR,
                  positions: list[Pointer] = SNAKE_POSITION) -> None:
         super().__init__(body_color=body_color)
@@ -99,22 +91,6 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    """Описывает поведение змейки, наследуется от GameObject.
-    Атрибуты:
-    length — длина змейки. Равна 1.
-    positions — список, содержащий позиции всех сегментов тела змейки.
-    Начальная позиция — центр экрана.
-    next_direction — следующее направление движения,
-    которое будет применено после обработки нажатия клавиши.
-    body_color — цвет змейки.
-    last - последний сегмент змейки.
-    Методы:
-    update_direction — обновляет направление движения змейки.
-    move — обновляет позицию змейки.
-    draw — отрисовывает змейку на экране.
-    get_head_position — возвращает позицию головы змейки.
-    reset — сбрасывает змейку в начальное состояние.
-    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -132,12 +108,6 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self) -> None:
-        """Реализовано движение змейки.
-        head_position - текущее расположение головы змейки.
-        new_head_position - будущее расположение головы змейки.
-        Реализован проход через границы экрана.
-        Если длина змейки не увеличилась, то удаляем последний сегмент.
-        """
         head_position_width, head_position_height = self.get_head_position()
         direction_width, direction_height = self.direction
 
@@ -203,11 +173,6 @@ def handle_keys(game_object) -> None:
 
 
 def main() -> None:
-    """Основная функция проекта. Включает в себя
-    иницилизацию классов и логику игры.
-    apple - экземпляр яблока.
-    snake - экземпляр змейки.
-    """
     # Инициализация pg:
     pg.init()
     # Тут нужно создать экземпляры классов.
