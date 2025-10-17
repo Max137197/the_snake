@@ -50,12 +50,7 @@ clock = pg.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
-    """Базовый класс.
-    Атрибуты:
-    position расположен в центр экрана.
-    body_color равен 0.
-    Метод draw - пустой.
-    """
+    
 
     def __init__(self, body_color: Color = DEFAULT_COLOR) -> None:
         self.position: Pointer = CENTER
@@ -67,7 +62,8 @@ class GameObject:
 
 
 class Apple(GameObject):
-  
+    
+
     def __init__(self, body_color: Color = APPLE_COLOR,
                  positions: list[Pointer] = SNAKE_POSITION) -> None:
         super().__init__(body_color=body_color)
@@ -91,6 +87,7 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
+  
 
     def __init__(self) -> None:
         super().__init__()
@@ -108,6 +105,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self) -> None:
+        
         head_position_width, head_position_height = self.get_head_position()
         direction_width, direction_height = self.direction
 
@@ -123,7 +121,7 @@ class Snake(GameObject):
         )
 
     def draw(self):
-        """Отрисовывает змейку на игровой поверхности."""
+        
         for position in self.positions[:-1]:
             rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pg.draw.rect(screen, self.body_color, rect)
@@ -144,10 +142,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def reset(self) -> None:
-        """Реализован сброс змейки. Атрибуты приравниваются
-        к изначальным параметрам, кроме direction.
-        direction выбирается случайно из возможных вариантов.
-        """
+        
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = choice([RIGHT, LEFT, DOWN, UP])
@@ -173,6 +168,7 @@ def handle_keys(game_object) -> None:
 
 
 def main() -> None:
+    
     # Инициализация pg:
     pg.init()
     # Тут нужно создать экземпляры классов.
