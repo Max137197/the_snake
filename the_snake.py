@@ -50,7 +50,6 @@ clock = pg.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
-    
 
     def __init__(self, body_color: Color = DEFAULT_COLOR) -> None:
         self.position: Pointer = CENTER
@@ -62,7 +61,6 @@ class GameObject:
 
 
 class Apple(GameObject):
-    
 
     def __init__(self, body_color: Color = APPLE_COLOR,
                  positions: list[Pointer] = SNAKE_POSITION) -> None:
@@ -70,7 +68,6 @@ class Apple(GameObject):
         self.randomize_position(positions)
 
     def randomize_position(self, positions: list[Pointer]) -> None:
-        """Устанавливает случайную позицию яблока."""
         while True:
             random_position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                                randint(0, GRID_HEIGHT - 1)
@@ -80,14 +77,12 @@ class Apple(GameObject):
         self.position = random_position
 
     def draw(self) -> None:
-        """Отрисовывает яблоко на игровой поверхности."""
         rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
-  
 
     def __init__(self) -> None:
         super().__init__()
@@ -99,13 +94,11 @@ class Snake(GameObject):
         self.last: Pointer | None = None
 
     def update_direction(self) -> None:
-        """Метод обновления направления после нажатия на кнопку."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self) -> None:
-        
         head_position_width, head_position_height = self.get_head_position()
         direction_width, direction_height = self.direction
 
@@ -121,7 +114,6 @@ class Snake(GameObject):
         )
 
     def draw(self):
-        
         for position in self.positions[:-1]:
             rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pg.draw.rect(screen, self.body_color, rect)
@@ -138,11 +130,9 @@ class Snake(GameObject):
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self) -> Pointer:
-        """Реализован метод нахождения головы змейки."""
         return self.positions[0]
 
     def reset(self) -> None:
-        
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = choice([RIGHT, LEFT, DOWN, UP])
@@ -151,7 +141,6 @@ class Snake(GameObject):
 
 
 def handle_keys(game_object) -> None:
-    """Функция обработки действий пользователя."""
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
@@ -168,7 +157,6 @@ def handle_keys(game_object) -> None:
 
 
 def main() -> None:
-    
     # Инициализация pg:
     pg.init()
     # Тут нужно создать экземпляры классов.
@@ -195,3 +183,4 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
+
