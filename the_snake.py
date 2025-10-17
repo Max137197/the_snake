@@ -50,6 +50,12 @@ clock = pg.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
+    """Базовый класс.
+    Атрибуты:
+    position расположен в центр экрана.
+    body_color равен 0.
+    Метод draw - пустой.
+    """
 
     def __init__(self, body_color: Color = DEFAULT_COLOR) -> None:
         self.position: Pointer = CENTER
@@ -61,6 +67,14 @@ class GameObject:
 
 
 class Apple(GameObject):
+    """Описывает появление яблока, наследуется от GameObject.
+    Атрибуты:
+    body_color равен цвету яблока.
+    position вычисляется случайно, с помощью метода randomize_position.
+    Методы:
+    randomize_position - возвращает случайную позицию.
+    draw - вырисовывает яблоко.
+    """
 
     def __init__(self, body_color: Color = APPLE_COLOR,
                  positions: list[Pointer] = SNAKE_POSITION) -> None:
@@ -68,6 +82,7 @@ class Apple(GameObject):
         self.randomize_position(positions)
 
     def randomize_position(self, positions: list[Pointer]) -> None:
+        """Устанавливает случайную позицию яблока."""
         while True:
             random_position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                                randint(0, GRID_HEIGHT - 1)
@@ -77,12 +92,29 @@ class Apple(GameObject):
         self.position = random_position
 
     def draw(self) -> None:
+        """Рисует яблоко на игровой поверхности."""
         rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
+    """Описывает поведение змейки, наследуется от GameObject.
+    Атрибуты:
+    length — длина змейки. Равна 1.
+    positions — список, содержащий позиции всех сегментов тела змейки.
+    Начальная позиция — центр экрана.
+    next_direction — следующее направление движения,
+    которое будет применено после обработки нажатия клавиши.
+    body_color — цвет змейки.
+    last - последний сегмент змейки.
+    Методы:
+    update_direction — обновляет направление движения змейки.
+    move — обновляет позицию змейки.
+    draw — отрисовывает змейку на экране.
+    get_head_position — возвращает позицию головы змейки.
+    reset — сбрасывает змейку в начальное состояние.
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -94,11 +126,18 @@ class Snake(GameObject):
         self.last: Pointer | None = None
 
     def update_direction(self) -> None:
+        """Метод обновления направления после нажатия на кнопку."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self) -> None:
+        """Реализовано движение змейки.
+        head_position - текущее расположение головы змейки.
+        new_head_position - будущее расположение головы змейки.
+        Реализован проход через границы экрана.
+        Если длина змейки не увеличилась, то удаляем последний сегмент.
+        """
         head_position_width, head_position_height = self.get_head_position()
         direction_width, direction_height = self.direction
 
@@ -114,6 +153,7 @@ class Snake(GameObject):
         )
 
     def draw(self):
+        """Рисуем змейку на игровой поверхности."""
         for position in self.positions[:-1]:
             rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pg.draw.rect(screen, self.body_color, rect)
@@ -130,9 +170,14 @@ class Snake(GameObject):
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self) -> Pointer:
+        """Реализован метод нахождения головы змейки."""
         return self.positions[0]
 
     def reset(self) -> None:
+        """Реализован сброс змейки. Атрибуты приравниваются
+        к изначальным параметрам, кроме direction.
+        direction выбирается случайно из возможных вариантов.
+        """
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = choice([RIGHT, LEFT, DOWN, UP])
@@ -141,6 +186,7 @@ class Snake(GameObject):
 
 
 def handle_keys(game_object) -> None:
+    """Функция обработки действий пользователя."""
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
@@ -157,6 +203,11 @@ def handle_keys(game_object) -> None:
 
 
 def main() -> None:
+    """Основная функция данной задачи. Включает в себя
+    иницилизацию классов и логику игры.
+    apple - экземпляр яблока.
+    snake - экземпляр змейки.
+    """
     # Инициализация pg:
     pg.init()
     # Тут нужно создать экземпляры классов.
@@ -183,4 +234,3 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
