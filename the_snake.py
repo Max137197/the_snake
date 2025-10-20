@@ -53,7 +53,7 @@ class GameObject:
         self.position = position
         self.body_color = body_color
 
-        def draw(self) -> None:
+    def draw(self) -> None:
         """Метод для отрисовки объекта."""
         raise NotImplementedError(
             'Method "draw" must be '
