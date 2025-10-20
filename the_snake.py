@@ -54,14 +54,12 @@ class GameObject:
         self.body_color = body_color
 
     def draw(self) -> None:
-        """Метод для отрисовки объекта."""
+        """Метод для отрисовки объекта. Должен быть переопределен в наследниках."""
         raise NotImplementedError(
             'Method "draw" must be '
             'overridden in subclasses.'
         )
 
-
-class Apple(GameObject):
 
 class Apple(GameObject):
     """
@@ -129,7 +127,6 @@ class Snake(GameObject):
 
         self.positions.insert(0, new_head)
 
-        # Удаляем последний сегмент, если змейка не растёт
         if len(self.positions) > self.length:
             self.last = self.positions.pop()
         else:
@@ -141,12 +138,9 @@ class Snake(GameObject):
             rect = pg.Rect(pos, (GRID_SIZE, GRID_SIZE))
             pg.draw.rect(screen, self.body_color, rect)
             pg.draw.rect(screen, BORDER_COLOR, rect, 1)
-
-            # Выделяем голову
             if i == 0:
                 pg.draw.rect(screen, (0, 100, 0), rect, 1)
 
-        # Затираем последний сегмент, если он был
         if self.last:
             last_rect = pg.Rect(self.last, (GRID_SIZE, GRID_SIZE))
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
@@ -188,10 +182,8 @@ def main() -> None:
 
     while True:
         clock.tick(SPEED)
-
         handle_keys(snake)
         snake.update_direction()
-
         snake.move()
 
         if snake.get_head_position() == apple.position:
