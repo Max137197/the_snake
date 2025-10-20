@@ -45,13 +45,19 @@ class GameObject:
         body_color: цвет тела объекта.
     """
 
-    def __init__(self, position: Pointer = CENTER, body_color: Color = BOARD_BACKGROUND_COLOR) -> None:
+    def __init__(
+        self,
+        position: Pointer = CENTER,
+        body_color: Color = BOARD_BACKGROUND_COLOR
+    ) -> None:
         self.position = position
         self.body_color = body_color
 
     def draw(self) -> None:
         """Метод для отрисовки объекта. Должен быть переопределен в наследниках."""
-        raise NotImplementedError('Method "draw" must be overridden in subclasses.')
+        raise NotImplementedError(
+            'Method "draw" must be overridden in subclasses.'
+        )
 
 
 class Apple(GameObject):
@@ -135,7 +141,7 @@ class Snake(GameObject):
 
             # Выделяем голову
             if i == 0:
-                pg.draw.rect(screen, (0, 100, 0), rect, 1)  # чуть темнее для головы
+                pg.draw.rect(screen, (0, 100, 0), rect, 1)
 
         # Затираем последний сегмент, если он был
         if self.last:
