@@ -55,10 +55,8 @@ class GameObject:
 
     def draw(self) -> None:
         """Метод для отрисовки объекта. Должен быть переопределен в наследниках."""
-        raise NotImplementedError(
-            'Method "draw" must be '
-            'overridden in subclasses.'
-        )
+        raise NotImplementedError('Method "draw" must be '
+                                  'overridden in subclasses.')
 
 
 class Apple(GameObject):
