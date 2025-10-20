@@ -54,7 +54,8 @@ class GameObject:
         self.body_color = body_color
 
     def draw(self) -> None:
-        """Метод для отрисовки объекта. Должен быть переопределен в наследниках."""
+        """Метод для отрисовки объекта. 
+        Должен быть переопределен в наследниках."""
         raise NotImplementedError('Subclasses must implement draw')
 
 
