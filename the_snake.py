@@ -64,7 +64,6 @@ class GameObject:
 
     def draw(self) -> None:
         """Метод для переопределения в дочерних классах."""
-        ...
 
 
 class Apple(GameObject):
@@ -207,6 +206,10 @@ def main() -> None:
     snake = Snake()
     apple = Apple(positions=snake.positions)
 
+    # Очистка экрана один раз в начале
+    screen.fill(BOARD_BACKGROUND_COLOR)
+    pg.display.update()
+
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
@@ -219,10 +222,12 @@ def main() -> None:
             apple.randomize_position(snake.positions)
         # Проверка на столкновение с собой
         elif snake.get_head_position() in snake.positions[1:]:
+            # При сбросе — очищаем весь экран
+            screen.fill(BOARD_BACKGROUND_COLOR)
             snake.reset()
+            apple.randomize_position(snake.positions)
 
-        # Отрисовка
-        screen.fill(BOARD_BACKGROUND_COLOR)
+        # Отрисовка объектов
         apple.draw()
         snake.draw()
         pg.display.update()
